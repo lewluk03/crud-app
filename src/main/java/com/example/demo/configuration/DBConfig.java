@@ -1,6 +1,5 @@
 package com.example.demo.configuration;
 
-import com.example.demo.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,9 +9,9 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @ConfigurationProperties(prefix="spring.datasource")
-public class DBConfiguration {
+public class DBConfig {
 
-    private static Logger logger = LoggerFactory.getLogger(DBConfiguration.class);
+    private static Logger logger = LoggerFactory.getLogger(DBConfig.class);
 
     private String driverClassName;
     private String url;

@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.transaction.Transactional;
 
+import static com.example.demo.utils.SecurityUtils.httpBasicForTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = DemoApplication.class)
@@ -48,6 +49,7 @@ public class ProductControllerIT {
         Product savedProduct = productRepository.saveAndFlush(product);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/product/" + savedProduct.getProductId())
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -59,6 +61,7 @@ public class ProductControllerIT {
     @Test
     public void productNotFound() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/api/product/1")
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -72,6 +75,7 @@ public class ProductControllerIT {
         Product savedProduct = productRepository.saveAndFlush(product);
 
         mvc.perform(MockMvcRequestBuilders.delete("/api/product/" + savedProduct.getProductId())
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -93,6 +97,7 @@ public class ProductControllerIT {
         updatedProduct.setProductName("Sony DVD p323 Player UPDATED");
 
         mvc.perform(MockMvcRequestBuilders.put("/api/product/" + savedProduct.getProductId())
+                .with(httpBasicForTest())
                 .content(JsonUtil.toJson(updatedProduct))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -115,6 +120,7 @@ public class ProductControllerIT {
         productRepository.saveAndFlush(product);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/product")
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -130,6 +136,7 @@ public class ProductControllerIT {
         product.setProductName("Sony DVD p323 Player");
 
         mvc.perform(MockMvcRequestBuilders.post("/api/product/")
+                .with(httpBasicForTest())
                 .content(JsonUtil.toJson(product))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());

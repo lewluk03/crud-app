@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.transaction.Transactional;
 
+import static com.example.demo.utils.SecurityUtils.httpBasicForTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = DemoApplication.class)
@@ -49,7 +50,7 @@ public class BucketControllerIT {
     private BucketPositionRepository bucketPositionRepository;
 
     @AfterEach
-    public void cleanUp(){
+    public void cleanUp() {
         bucketReposiroty.deleteAll();
         bucketReposiroty.flush();
     }
@@ -59,7 +60,7 @@ public class BucketControllerIT {
 
 
         Bucket bucket = new Bucket();
-        bucket.setCustomer(addCustomer("John","Doe"));
+        bucket.setCustomer(addCustomer("John", "Doe"));
 
         Bucket savedBucket = bucketReposiroty.saveAndFlush(bucket);
 
@@ -71,6 +72,7 @@ public class BucketControllerIT {
         bucketPositionRepository.saveAndFlush(bucketPosition);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/bucket/" + savedBucket.getBucketId())
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -106,11 +108,12 @@ public class BucketControllerIT {
 
 
         mvc.perform(MockMvcRequestBuilders.get("/api/bucket")
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].customerName", CoreMatchers.hasItems("AnnaAnna","JohnDoe")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].positions.[*].productName", CoreMatchers.hasItems("PS5","Xbox")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].customerName", CoreMatchers.hasItems("AnnaAnna", "JohnDoe")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].positions.[*].productName", CoreMatchers.hasItems("PS5", "Xbox")));
         ;
     }
 
@@ -120,7 +123,8 @@ public class BucketControllerIT {
     public void addBucketData() throws Exception {
         Customer customer = addCustomer("Marian", "Pazdzioch");
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/bucket/" +  customer.getCustomerId())
+        mvc.perform(MockMvcRequestBuilders.post("/api/bucket/" + customer.getCustomerId())
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -139,6 +143,7 @@ public class BucketControllerIT {
         Bucket savedBucket = bucketReposiroty.saveAndFlush(bucket);
 
         mvc.perform(MockMvcRequestBuilders.delete("/api/bucket/" + savedBucket.getBucketId())
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -146,7 +151,7 @@ public class BucketControllerIT {
 
 
     @Test
-    public void addBuckerPosition() throws Exception{
+    public void addBuckerPosition() throws Exception {
         Customer customer = addCustomer("Stefan", "Jarocki");
 
         Bucket bucket = new Bucket();
@@ -158,7 +163,8 @@ public class BucketControllerIT {
         AddPositionToBucketDTO addPositionToBucketDTO = new AddPositionToBucketDTO();
         addPositionToBucketDTO.setQuantity(8);
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/bucket/" +  bucket.getBucketId() + "/positions/" + product.getProductId())
+        mvc.perform(MockMvcRequestBuilders.post("/api/bucket/" + bucket.getBucketId() + "/positions/" + product.getProductId())
+                .with(httpBasicForTest())
                 .content(JsonUtil.toJson(addPositionToBucketDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -173,9 +179,9 @@ public class BucketControllerIT {
     }
 
     @Test
-    public void deleteBucketPositionById() throws Exception{
+    public void deleteBucketPositionById() throws Exception {
 
-        Customer customer = addCustomer("Stefan", "Jarocki");
+        addCustomer("Stefan", "Jarocki");
 
         Bucket bucket = new Bucket();
         bucket.setCustomer(addCustomer("John", "Doe"));
@@ -190,7 +196,8 @@ public class BucketControllerIT {
 
         bucketPositionRepository.saveAndFlush(bucketPosition);
 
-        mvc.perform(MockMvcRequestBuilders.delete("/api/bucket/" +  bucket.getBucketId() + "/positions/" + product.getProductId())
+        mvc.perform(MockMvcRequestBuilders.delete("/api/bucket/" + bucket.getBucketId() + "/positions/" + product.getProductId())
+                .with(httpBasicForTest())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -202,26 +209,22 @@ public class BucketControllerIT {
     }
 
 
-    public Customer addCustomer(String firstName, String lastName){
+    public Customer addCustomer(String firstName, String lastName) {
 
         Customer customer = new Customer();
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
 
-        Customer saveCustomer = customerRepository.saveAndFlush(customer);
-
-        return saveCustomer;
+        return customerRepository.saveAndFlush(customer);
 
     }
 
-    public Product addProduct(String productName){
+    public Product addProduct(String productName) {
 
         Product product = new Product();
         product.setProductName(productName);
 
-        Product saveProduct = productRepository.saveAndFlush(product);
-
-        return saveProduct;
+        return productRepository.saveAndFlush(product);
 
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -42,5 +43,25 @@ public class Bucket {
 
     public void setBucketPosition(Set<BucketPosition> bucketPosition) {
         this.bucketPosition = bucketPosition;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Bucket bucket = (Bucket) o;
+
+        if (!Objects.equals(bucketId, bucket.bucketId)) return false;
+        if (!Objects.equals(customer, bucket.customer)) return false;
+        return Objects.equals(bucketPosition, bucket.bucketPosition);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bucketId != null ? bucketId.hashCode() : 0;
+        result = 31 * result + (customer != null ? customer.hashCode() : 0);
+        result = 31 * result + (bucketPosition != null ? bucketPosition.hashCode() : 0);
+        return result;
     }
 }

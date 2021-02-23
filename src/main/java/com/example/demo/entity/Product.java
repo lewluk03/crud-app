@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @Entity
 @Table(name="product")
@@ -41,5 +42,25 @@ public class Product {
 
     public void setProductType(String productType) {
         this.productType = productType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (!Objects.equals(productId, product.productId)) return false;
+        if (!Objects.equals(productName, product.productName)) return false;
+        return Objects.equals(productType, product.productType);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = productId != null ? productId.hashCode() : 0;
+        result = 31 * result + (productName != null ? productName.hashCode() : 0);
+        result = 31 * result + (productType != null ? productType.hashCode() : 0);
+        return result;
     }
 }

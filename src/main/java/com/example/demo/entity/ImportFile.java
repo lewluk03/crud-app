@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Table(name="importfile")
@@ -43,5 +45,27 @@ public class ImportFile {
 
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ImportFile that = (ImportFile) o;
+
+        if (!Objects.equals(importFileId, that.importFileId)) return false;
+        if (!Objects.equals(fileName, that.fileName)) return false;
+        if (!Objects.equals(fileType, that.fileType)) return false;
+        return Arrays.equals(fileData, that.fileData);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = importFileId != null ? importFileId.hashCode() : 0;
+        result = 31 * result + (fileName != null ? fileName.hashCode() : 0);
+        result = 31 * result + (fileType != null ? fileType.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(fileData);
+        return result;
     }
 }

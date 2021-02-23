@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "bucketpositions")
@@ -56,5 +57,27 @@ public class BucketPosition {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BucketPosition that = (BucketPosition) o;
+
+        if (quantity != that.quantity) return false;
+        if (!Objects.equals(bucketPosId, that.bucketPosId)) return false;
+        if (!Objects.equals(bucket, that.bucket)) return false;
+        return Objects.equals(product, that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bucketPosId != null ? bucketPosId.hashCode() : 0;
+        result = 31 * result + (bucket != null ? bucket.hashCode() : 0);
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + quantity;
+        return result;
     }
 }

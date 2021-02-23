@@ -53,15 +53,13 @@ public class Bucket {
         Bucket bucket = (Bucket) o;
 
         if (!Objects.equals(bucketId, bucket.bucketId)) return false;
-        if (!Objects.equals(customer, bucket.customer)) return false;
-        return Objects.equals(bucketPosition, bucket.bucketPosition);
+        return Objects.equals(customer, bucket.customer);
     }
 
     @Override
     public int hashCode() {
         int result = bucketId != null ? bucketId.hashCode() : 0;
         result = 31 * result + (customer != null ? customer.hashCode() : 0);
-        result = 31 * result + (bucketPosition != null ? bucketPosition.hashCode() : 0);
         return result;
     }
 }

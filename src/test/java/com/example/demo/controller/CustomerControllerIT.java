@@ -120,7 +120,7 @@ public class CustomerControllerIT {
 
     }
 
-    public Customer addCustomer(String firstName, String lastName) {
+    private Customer addCustomer(String firstName, String lastName) {
 
         Customer customer = new Customer();
         customer.setFirstName(firstName);

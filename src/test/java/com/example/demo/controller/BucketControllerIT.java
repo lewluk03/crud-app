@@ -78,7 +78,7 @@ public class BucketControllerIT {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.customerName", CoreMatchers.is("JohnDoe")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.positions.[*].productName", CoreMatchers.hasItems("Xbox")));
-        ;
+
     }
 
     @Test
@@ -114,7 +114,7 @@ public class BucketControllerIT {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].customerName", CoreMatchers.hasItems("AnnaAnna", "JohnDoe")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].positions.[*].productName", CoreMatchers.hasItems("PS5", "Xbox")));
-        ;
+
     }
 
 
@@ -209,7 +209,7 @@ public class BucketControllerIT {
     }
 
 
-    public Customer addCustomer(String firstName, String lastName) {
+    private Customer addCustomer(String firstName, String lastName) {
 
         Customer customer = new Customer();
         customer.setFirstName(firstName);
@@ -219,7 +219,7 @@ public class BucketControllerIT {
 
     }
 
-    public Product addProduct(String productName) {
+    private Product addProduct(String productName) {
 
         Product product = new Product();
         product.setProductName(productName);

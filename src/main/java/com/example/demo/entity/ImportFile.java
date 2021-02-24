@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
 @Table(name="importfile")
-public class ImportFile {
+public class ImportFile implements Serializable {
+
+    private static final long serialVersionUID = -2661405911591267384L;
 
     @Id
     @Column(name="import_file_id")

@@ -3,8 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.AddPositionToBucketDTO;
 import com.example.demo.dto.BucketDTO;
 import com.example.demo.dto.converter.BucketEntityDTOConverter;
-import com.example.demo.entity.Bucket;
-import com.example.demo.entity.BucketPosition;
 import com.example.demo.service.BucketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

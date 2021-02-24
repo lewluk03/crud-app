@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name="bucket")
-public class Bucket {
+public class Bucket implements Serializable {
+
+    private static final long serialVersionUID = 4142933944531707985L;
 
     @Id
     @Column(name="bucket_id")

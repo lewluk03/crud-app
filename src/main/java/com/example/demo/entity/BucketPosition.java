@@ -3,11 +3,14 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "bucketpositions")
-public class BucketPosition {
+public class BucketPosition implements Serializable {
+
+    private static final long serialVersionUID = -1626182385132070240L;
 
     @Id
     @Column(name ="buckpos_id")

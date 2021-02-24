@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name="product")
-public class Product {
+public class Product implements Serializable {
+
+
+    private static final long serialVersionUID = -5801992119021989182L;
 
     @Id
     @Column(name="product_id")

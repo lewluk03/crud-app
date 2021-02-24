@@ -1,14 +1,14 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "customer")
-public class Customer {
+public class Customer implements Serializable {
+
+    private static final long serialVersionUID = 3290838219947649515L;
 
     @Id
     @Column(name="customer_id")

@@ -12,15 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 
 @Component
-public class InterceptorLogger implements HandlerInterceptor {
+public class CustomerInterceptorLogger implements HandlerInterceptor {
 
     private static Logger logger = LoggerFactory.getLogger(CustomerInterceptorLogger.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         StringBuffer requestDetails = new StringBuffer();
-        requestDetails.append("InterceptorLogger preHandle:" + request.getMethod() + request.getRequestURI() +
+        requestDetails.append("Customer preHandle:" + request.getMethod() + request.getRequestURI() +
                 " ContentType: " + request.getContentType() + " UserName: "+ userName);
 
         String requestMethod = request.getMethod();
@@ -39,17 +41,17 @@ public class InterceptorLogger implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
-        logger.info("InterceptorLogger postHandle response status: " + response.getStatus());
+        logger.info("Customer postHandle response status: " + response.getStatus());
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
         Boolean result = true;
         if (ex != null){
             ex.printStackTrace();
             result = false;
         }
-        logger.info("InterceptorLogger  afterCompletion result: " + result + " exception: " + ex);
+        logger.info("Customer  afterCompletion result: " + result + " exception: " + ex);
     }
 }

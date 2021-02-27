@@ -3,11 +3,11 @@ package com.example.demo.configuration;
 import com.example.demo.interceptor.CustomerInterceptorLogger;
 import com.example.demo.interceptor.InterceptorLogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Component
+@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Autowired

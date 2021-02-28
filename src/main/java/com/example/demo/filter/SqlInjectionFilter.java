@@ -26,11 +26,11 @@ public class SqlInjectionFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI();
-        StringBuffer parameters = new StringBuffer();
+        StringBuilder parameters = new StringBuilder();
 
         Enumeration<String> parameterNames = httpRequest.getParameterNames();
             while (parameterNames.hasMoreElements()){
-            String element  = (String) parameterNames.nextElement();
+            String element  = parameterNames.nextElement();
             parameters.append(element);
             parameters.append( httpRequest.getParameter(element));
         }

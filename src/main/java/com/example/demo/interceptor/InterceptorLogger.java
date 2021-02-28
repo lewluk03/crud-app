@@ -14,22 +14,30 @@ import java.util.Enumeration;
 @Component
 public class InterceptorLogger implements HandlerInterceptor {
 
-    private static Logger logger = LoggerFactory.getLogger(CustomerInterceptorLogger.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomerInterceptorLogger.class);
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        StringBuffer requestDetails = new StringBuffer();
-        requestDetails.append("InterceptorLogger preHandle:" + request.getMethod() + request.getRequestURI() +
-                " ContentType: " + request.getContentType() + " UserName: "+ userName);
+        StringBuilder requestDetails = new StringBuilder();
+        requestDetails.append("InterceptorLogger preHandle:")
+                .append(request.getMethod())
+                .append(request.getRequestURI())
+                .append(" ContentType: ")
+                .append(request.getContentType())
+                .append(" UserName: ")
+                .append(userName);
 
         String requestMethod = request.getMethod();
-        if (requestMethod.equalsIgnoreCase("POST") || requestMethod.equalsIgnoreCase("PUT") ){
+        if (requestMethod.equalsIgnoreCase("POST") || requestMethod.equalsIgnoreCase("PUT")) {
 
             Enumeration<String> parameterNames = request.getParameterNames();
-            while (parameterNames.hasMoreElements()){
-                String element  = (String) parameterNames.nextElement();
-                requestDetails.append(" ParamName: "+ element + " Value: "+  request.getParameter(element));
+            while (parameterNames.hasMoreElements()) {
+                String element = parameterNames.nextElement();
+                requestDetails.append(" ParamName: ")
+                        .append(element)
+                        .append(" Value: ")
+                        .append(request.getParameter(element));
             }
         }
 
@@ -38,15 +46,15 @@ public class InterceptorLogger implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
 
         logger.info("InterceptorLogger postHandle response status: " + response.getStatus());
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        Boolean result = true;
-        if (ex != null){
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        boolean result = true;
+        if (ex != null) {
             ex.printStackTrace();
             result = false;
         }

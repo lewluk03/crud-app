@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProfile name="dev">
+
+        <property name="LOGS" value="${LOGS:-./logs/logs_dev}" />
+
+        <appender name="Console"
+                  class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>
+                    %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+                </Pattern>
+            </layout>
+        </appender>
+
+        <appender name="RollingFile"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOGS}/crud_dev.log</file>
+            <encoder
+                    class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            </encoder>
+
+            <rollingPolicy
+                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily and when the file reaches 10 MegaBytes -->
+                <fileNamePattern>${LOGS}/archived/crud_dev-%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+
+        <appender name="WarningRollingFile"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOGS}/warn_dev.log</file>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>WARN</level>
+            </filter>
+            <encoder
+                    class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            </encoder>
+
+            <rollingPolicy
+                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily and when the file reaches 10 MegaBytes -->
+                <fileNamePattern>${LOGS}/archived/warn_dev-%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+
+        <!-- LOG everything at INFO level -->
+        <root level="info">
+            <appender-ref ref="RollingFile" />
+            <appender-ref ref="Console" />
+            <appender-ref ref="WarningRollingFile" />
+        </root>
+
+        <!-- LOG "com.examples" at TRACE level -->
+        <logger name="com.example" level="trace" additivity="false">
+            <appender-ref ref="RollingFile" />
+            <appender-ref ref="Console" />
+            <appender-ref ref="WarningRollingFile" />
+        </logger>
+
+
+    </springProfile>
+
+    <springProfile name="prod">
+        <property name="LOGS" value="${LOGS:-./logs/logs_prod}" />
+
+        <appender name="Console"
+                  class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>
+                    %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+                </Pattern>
+            </layout>
+        </appender>
+
+        <appender name="RollingFile"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOGS}/crud_prod.log</file>
+            <encoder
+                    class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            </encoder>
+
+            <rollingPolicy
+                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily and when the file reaches 10 MegaBytes -->
+                <fileNamePattern>${LOGS}/archived/crud_prod-%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+
+        <!-- LOG everything at ERROR level -->
+        <root level="error">
+            <appender-ref ref="RollingFile" />
+            <appender-ref ref="Console" />
+        </root>
+
+        <!-- LOG "com.examples" at ERROR level -->
+        <logger name="com.example" level="error" additivity="false">
+            <appender-ref ref="RollingFile" />
+            <appender-ref ref="Console" />
+        </logger>
+
+
+    </springProfile>
+</configuration>

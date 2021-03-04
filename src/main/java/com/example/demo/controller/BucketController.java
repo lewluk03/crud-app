@@ -44,7 +44,7 @@ public class BucketController {
 
     @DeleteMapping("{bucketId}")
     public void deleteBucket(@PathVariable("bucketId") Long bucketId){
-        bucketService.deletebucket(bucketId);
+        bucketService.deleteBucket(bucketId);
     }
 
 

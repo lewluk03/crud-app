@@ -53,7 +53,7 @@ public class BucketService {
     }
 
     @Transactional
-    public void deletebucket(Long bucketId){
+    public void deleteBucket(Long bucketId){
         bucketReposiroty.deleteById(bucketId);
     }
 
